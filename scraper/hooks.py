@@ -1,0 +1,61 @@
+import re
+
+HOOK_PHRASES = [
+    r"the perfect .+ doesn'?t exist",
+    r"top tiktok shopping finds",
+    r"if you haven'?t tried .+ watch this",
+    r"getting my daily .+ hits different",
+    r"late night snacks? hits different",
+    r"tiktok made me buy this",
+    r"\d+\s*reasons? why i love",
+    r"when you love feeling .+ but don'?t have the time",
+    r"don'?t buy that, buy this instead",
+    r"i tried every .+ out there and here are the results",
+    r"want .+\? then stop scrolling",
+    r"want .+\? then check this out",
+    r"if you'?re like me &? do .+ then this one'?s for you",
+    r"what i ordered vs\.? what i got",
+    r"i bought this for my .+ for",
+    r"some days i feel like .+ and that'?s why i use",
+    r"things i wish i knew about .+ sooner",
+    r"one product i use every day without fail",
+    r"\d+ tips? to get rid of",
+    r"\d+ reasons? why i use",
+    r"if you don'?t use .+ for .+ then i don'?t know what you'?re doing",
+    r"just got my delivery from",
+    r"stop scrolling if you suffer from",
+    r"stop scrolling if you want",
+    r"want to feel .+ but don'?t want to break the bank",
+    r"how i .+ while on a budget",
+    r"my top shopping find i now can'?t live without",
+    r"here'?s what i ordered &? here'?s what i got",
+    r"what .+ industry don'?t want you to know",
+    r"who else wants .+ without",
+    r"this is the secret to getting",
+    r"get rid of .+ with",
+    r"what you need to know about",
+    r"the lazy way to get",
+    r"the quickest way to solve",
+    r"little known ways to",
+    r"how i do",
+    r"i wish i knew about this brand before",
+    r"my personal battle with",
+    r"this is the biggest mistake people make when",
+    r"\d+ things? i wish i knew before i",
+    r"how to get .+ quickly",
+    r"if you'?re not doing .+ you'?re missing out",
+    r"this is why your .+ isn'?t working",
+    r"if you want .+ avoid this, and try this",
+    r"calling all .+ who are tired of",
+    r"okay, i'?m sharing my secret on how i",
+    r"the simple way to do",
+    r"\d+ reasons? why you should be using",
+    r"why is nobody talking about this",
+]
+
+
+def matches_hook_phrases(description):
+    if not description:
+        return []
+    desc_lower = description.lower()
+    return [phrase for phrase in HOOK_PHRASES if re.search(phrase, desc_lower)]
