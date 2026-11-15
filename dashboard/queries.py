@@ -23,7 +23,12 @@ def _d1_query(sql, params=None):
         
     with httpx.Client() as client:
         resp = client.post(D1_API_URL, headers=headers, json=payload, timeout=15.0)
-        resp.raise_for_status()
+        
+        # --- NEW DEBUGGING LOGIC ---
+        if resp.status_code != 200:
+            st.error(f"🛑 Cloudflare API Error ({resp.status_code}): {resp.text}")
+            return []
+            
         data = resp.json()
         if data.get("success") and data.get("result"):
             return data["result"][0].get("results", [])
