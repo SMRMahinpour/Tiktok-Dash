@@ -2,10 +2,10 @@ import httpx
 import streamlit as st
 from pathlib import Path
 
-# Cloudflare D1 Credentials
-CF_ACCOUNT_ID = "3a95183063da21a3d524e15898c76a4b"
-CF_DATABASE_ID = "3a4fdcbe-093a-41e4-bdf0-24fb6b5d29e0"
-CF_API_TOKEN = "cfut_dkUybcBxhOExzPy390UrwQTI3ji5ZVugWySJP9GK834f5e65"
+# Pull credentials securely from Streamlit Secrets
+CF_ACCOUNT_ID = st.secrets["CF_ACCOUNT_ID"]
+CF_DATABASE_ID = st.secrets["CF_DATABASE_ID"]
+CF_API_TOKEN = st.secrets["CF_API_TOKEN"]
 D1_API_URL = f"https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/d1/database/{CF_DATABASE_ID}/query"
 
 _ACTIVE_WHERE = "(archived = 0 OR archived IS NULL) AND (removed = 0 OR removed IS NULL)"
