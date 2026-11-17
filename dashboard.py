@@ -98,6 +98,10 @@ _TABLE_CSS = """
     margin-left: 5px;
     font-weight: bold;
 }
+.thumb-link {
+    display: inline-block;
+    cursor: zoom-in;
+}
 .thumb-img {
     width: 60px;
     height: 80px;
@@ -106,6 +110,11 @@ _TABLE_CSS = """
     border: 1px solid #333;
     display: block;
     background: #1a1b20;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.thumb-link:hover .thumb-img {
+    transform: scale(1.08);
+    border-color: #4ECDC4;
 }
 .thumb-empty {
     width: 60px;
@@ -140,8 +149,11 @@ def _render_html_candidates_table(rows: list) -> str:
 
         if cover:
             thumb_html = (
+                f'<a href="{cover}" target="_blank" rel="noopener noreferrer" '
+                f'class="thumb-link" title="Open full-size image">'
                 f'<img src="{cover}" class="thumb-img" loading="lazy" '
-                f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'
+                f'onerror="this.style.display=\'none\';this.parentElement.nextElementSibling.style.display=\'flex\';">'
+                f'</a>'
                 f'<div class="thumb-empty" style="display:none;">No Img</div>'
             )
         else:
