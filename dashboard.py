@@ -98,6 +98,28 @@ _TABLE_CSS = """
     margin-left: 5px;
     font-weight: bold;
 }
+.thumb-img {
+    width: 60px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #333;
+    display: block;
+    background: #1a1b20;
+}
+.thumb-empty {
+    width: 60px;
+    height: 80px;
+    border-radius: 6px;
+    border: 1px dashed #333;
+    background: #1a1b20;
+    color: #666;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
 </style>
 """
 
@@ -114,6 +136,14 @@ def _render_html_candidates_table(rows: list) -> str:
         desc = html.escape(str(r["Description"]))
         author = html.escape(str(r["Author"]))
         link = html.escape(str(r["Link"]))
+        if cover:
+            thumb_html = (
+                f'<img src="{cover}" class="thumb-img" loading="lazy" '
+                f'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">'
+                f'<div class="thumb-empty" style="display:none;">No Img</div>'
+            )
+        else:
+            thumb_html = '<div class="thumb-empty">No Img</div>'
         
         desc_html = (
             f'<a href="{link}" target="_blank" class="desc-link">{desc}<span class="link-icon">↗</span></a>'
@@ -251,6 +281,7 @@ with tab_radar:
 
         rows.append({
             "Rank": len(rows) + 1,
+            "Cover": str(v.get("cover_url") or ""),
             "Category": str(c.get("category") or ""),
             "Quadrant": str(c.get("quadrant") or ""),
             "Score": _float(c.get("trending_score")),
