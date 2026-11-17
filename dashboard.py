@@ -136,6 +136,8 @@ def _render_html_candidates_table(rows: list) -> str:
         desc = html.escape(str(r["Description"]))
         author = html.escape(str(r["Author"]))
         link = html.escape(str(r["Link"]))
+        cover = html.escape(str(r.get("Cover") or ""))
+
         if cover:
             thumb_html = (
                 f'<img src="{cover}" class="thumb-img" loading="lazy" '
@@ -144,15 +146,16 @@ def _render_html_candidates_table(rows: list) -> str:
             )
         else:
             thumb_html = '<div class="thumb-empty">No Img</div>'
-        
+
         desc_html = (
             f'<a href="{link}" target="_blank" class="desc-link">{desc}<span class="link-icon">↗</span></a>'
             if link else desc
         )
-        
+
         body_cells.append(
             f"<tr>"
             f"<td style='text-align:right;color:#888;'>{r['Rank']}</td>"
+            f"<td>{thumb_html}</td>"
             f"<td><code>{cat}</code></td>"
             f"<td><span class='badge' style='{q_style}'>{quad}</span></td>"
             f"<td style='text-align:right;font-weight:700;color:#fff;'>{r['Score']:.2f}</td>"
@@ -175,6 +178,7 @@ def _render_html_candidates_table(rows: list) -> str:
         "<table class='radar-table'>"
         "<thead><tr>"
         "<th style='text-align:right;'>#</th>"
+        "<th>Preview</th>"
         "<th>Category</th>"
         "<th>Quadrant</th>"
         "<th style='text-align:right;'>Score</th>"
@@ -300,7 +304,7 @@ with tab_radar:
 
     total_matching = len(rows)
     display_rows = sorted(rows, key=lambda x: x["Score"], reverse=True)[:max_rows]
-    
+
     st.markdown(f"**Showing {len(display_rows)} of {total_matching} matching candidates**")
     if display_rows:
         st.markdown(_render_html_candidates_table(display_rows), unsafe_allow_html=True)
@@ -320,7 +324,7 @@ with tab_stats:
     col6.metric("Archived (Dead)", f"{kpis['archived']:,}")
 
     st.divider()
-    
+
     col_a, col_b = st.columns(2)
     with col_a:
         st.plotly_chart(category_donut(cat_counts), width="stretch")
